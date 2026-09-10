@@ -1,0 +1,299 @@
+[
+  {
+    "id": "C1",
+    "q": "Which entrance exam must a B.Tech Fashion Technology applicant take?",
+    "gold": "None - the document says there is NO entrance examination.",
+    "chunks": [
+      "chunk_p3_02",
+      "chunk_p3_01",
+      "chunk_p3_03",
+      "chunk_p3_06"
+    ],
+    "answer": "There is no entrance examination for the B.Tech Fashion Technology Programme.",
+    "verdict": "CORRECT",
+    "why": "",
+    "evidence_chunks": []
+  },
+  {
+    "id": "C1b",
+    "q": "List every B.Tech programme and state the entrance exam each one requires.",
+    "gold": "CSE/EEE/ECE/Civil/Mechanical -> VITEEE; Fashion Technology -> none.",
+    "chunks": [
+      "chunk_p3_02",
+      "chunk_p3_01",
+      "chunk_p3_03",
+      "chunk_p3_06"
+    ],
+    "answer": "For B.Tech Fashion Technology, there is no entrance examination. For B.Tech CSE, EEE, ECE, Civil, and Mechanical programs, students need to undertake the VIT Engineering Entrance Exam (VITEEE).",
+    "verdict": "CORRECT",
+    "why": "",
+    "evidence_chunks": []
+  },
+  {
+    "id": "C2",
+    "q": "Do I need both a UCEED score and a V-DAT score to get into B.Des?",
+    "gold": "No - UCEED OR V-DAT, plus 10+2 marks.",
+    "chunks": [
+      "chunk_p3_06",
+      "chunk_p3_02",
+      "chunk_p3_01",
+      "chunk_p2_01"
+    ],
+    "answer": "No, you do not need both. Selection for B.Des is based on a valid UCEED score *or* a V-DAT score, along with 10+2 marks in the qualifying examination.",
+    "verdict": "CORRECT",
+    "why": "",
+    "evidence_chunks": []
+  },
+  {
+    "id": "C2b",
+    "q": "I have a UCEED score but no V-DAT score. Am I eligible for B.Des?",
+    "gold": "Yes - they are alternatives.",
+    "chunks": [
+      "chunk_p3_06",
+      "chunk_p3_02",
+      "chunk_p3_01",
+      "chunk_p3_03"
+    ],
+    "answer": "Yes, you are eligible. Selection is based on a valid UCEED score or V-DAT score, with 10+2 marks.",
+    "verdict": "CORRECT",
+    "why": "",
+    "evidence_chunks": []
+  },
+  {
+    "id": "C3",
+    "q": "How is a student admitted to M.Des?",
+    "gold": "Not stated in the document (it is truncated).",
+    "chunks": [
+      "chunk_p3_06",
+      "chunk_p3_03",
+      "chunk_p3_02",
+      "chunk_p3_01"
+    ],
+    "answer": "The context provides admission information for the B.Des program but does not contain details on how a student is admitted to the M.Des program.",
+    "verdict": "CORRECT",
+    "why": "",
+    "evidence_chunks": []
+  },
+  {
+    "id": "C3b",
+    "q": "What score does M.Des require?",
+    "gold": "Not stated in the document.",
+    "chunks": [
+      "chunk_p3_06",
+      "chunk_p1_01",
+      "chunk_p3_03",
+      "chunk_p3_02"
+    ],
+    "answer": "The context does not contain the answer. The provided information only details admission requirements for the B.Des programme.",
+    "verdict": "CORRECT",
+    "why": "",
+    "evidence_chunks": []
+  },
+  {
+    "id": "C4",
+    "q": "On what date was FFCS Academic Regulations 4.0 approved?",
+    "gold": "Date is blank in source ('xxxxxxxxxxxxxxx'); 72nd AC meeting.",
+    "chunks": [
+      "chunk_p2_03",
+      "chunk_p2_05",
+      "chunk_p2_06",
+      "chunk_p1_02"
+    ],
+    "answer": "The context does not contain the answer.",
+    "verdict": "NUANCED",
+    "why": "Defensible but incomplete. The document genuinely has no date - it prints 'xxxxxxxxxxxxxxx'. But the retrieved chunk does say v4.0 was approved at the 72nd Academic Council meeting, and the model dropped that.",
+    "evidence_chunks": [
+      "chunk_p2_05"
+    ]
+  },
+  {
+    "id": "C5",
+    "q": "Which entrance exam ranks are used to admit students to M.Tech?",
+    "gold": "VITMEE (source typo says VITEEE).",
+    "chunks": [
+      "chunk_p3_03",
+      "chunk_p3_01",
+      "chunk_p3_02",
+      "chunk_p3_06"
+    ],
+    "answer": "VITEEE ranks are used to admit students to M.Tech.",
+    "verdict": "WRONG",
+    "why": "Propagated a typo in the source. The retrieved chunk literally says students are admitted 'based on their VITEEE ranks' in a paragraph that is otherwise about VITMEE. Naive RAG repeats the text; the graph stores the curated fact and keeps the source wording as a note.",
+    "evidence_chunks": [
+      "chunk_p3_03"
+    ]
+  },
+  {
+    "id": "C6",
+    "q": "How many FFCS regulation versions came before version 4.0? List them in order.",
+    "gold": "7: 1.00,1.10,2.00,2.10,3.0,3.1,3.2",
+    "chunks": [
+      "chunk_p2_03",
+      "chunk_p2_05",
+      "chunk_p2_06",
+      "chunk_p1_02"
+    ],
+    "answer": "There were 7 FFCS regulation versions before version 4.0:\n1. FFCS Regulations - Version 1.00\n2. FFCS Regulations Version 1.10\n3. FFCS Regulations Version 2.00\n4. FFCS Regulations Version 2.10\n5. FFCS Regulations 3.0\n6. FFCS Academic Regulations 3.1\n7. FFCS Academic Regulations 3.2",
+    "verdict": "CORRECT",
+    "why": "",
+    "evidence_chunks": []
+  },
+  {
+    "id": "C7",
+    "q": "List all the facilities at the school that offers B.Des.",
+    "gold": "PROTICS Studio, 3D-iD Studio, Smart PD Lab, Ergonomics Lab, Painting Booth",
+    "chunks": [
+      "chunk_p3_06",
+      "chunk_p3_04",
+      "chunk_p3_02",
+      "chunk_p1_05"
+    ],
+    "answer": "The facilities at the school that offers B.Des include:\n*   Facilities for design research\n*   Consultancy\n*   Training\n*   Growth for faculty members\n*   State-of-the-art studio/lab facilities for teaching\n*   State-of-the-art studio/lab facilities for training\n*   State-of-the-art studio/lab facilities for model-making\n*   State-of-the-art studio/lab facilities for prototyping\n*   State-of-the-art studio/lab facilities for experimenting",
+    "verdict": "WRONG",
+    "why": "Evidence split across two chunks. chunk_p3_04 says V-SIGN offers B.Des; the five named facilities are in chunk_p3_05, which was not retrieved. The model answered from the generic prose it did have ('design research, consultancy, training') and produced a fluent list containing none of the actual facilities.",
+    "evidence_chunks": [
+      "chunk_p3_04",
+      "chunk_p3_05"
+    ]
+  },
+  {
+    "id": "C8",
+    "q": "Which programmes in this document require no entrance examination at all?",
+    "gold": "Only B.Tech Fashion Technology. M.Des unknown, not 'none'.",
+    "chunks": [
+      "chunk_p3_02",
+      "chunk_p1_02",
+      "chunk_p3_06",
+      "chunk_p3_01"
+    ],
+    "answer": "B.Tech Fashion Technology Programme.",
+    "verdict": "CORRECT",
+    "why": "",
+    "evidence_chunks": []
+  },
+  {
+    "id": "C9",
+    "q": "How many Academic Council meetings are referenced in the document?",
+    "gold": "10",
+    "chunks": [
+      "chunk_p2_04",
+      "chunk_p2_07",
+      "chunk_p2_05",
+      "chunk_p2_03"
+    ],
+    "answer": "9",
+    "verdict": "WRONG",
+    "why": "Counting requires every chunk that names a meeting. The meetings are spread over chunk_p2_03, p2_04, p2_05 and p2_06; top-4 retrieved p2_03, p2_04, p2_05, p2_07. One meeting was never seen, so the count came out one short.",
+    "evidence_chunks": [
+      "chunk_p2_03",
+      "chunk_p2_04",
+      "chunk_p2_05",
+      "chunk_p2_06"
+    ]
+  },
+  {
+    "id": "C12",
+    "q": "Which course basket has no abbreviation defined in the document?",
+    "gold": "Project and Internship",
+    "chunks": [
+      "chunk_p1_01",
+      "chunk_p1_05",
+      "chunk_p2_01",
+      "chunk_p1_02"
+    ],
+    "answer": "Project and Internship",
+    "verdict": "CORRECT",
+    "why": "",
+    "evidence_chunks": []
+  },
+  {
+    "id": "C13",
+    "q": "How many distinct entrance examinations are named in the document? List them.",
+    "gold": "4: VITEEE, VITMEE, UCEED, V-DAT",
+    "chunks": [
+      "chunk_p3_02",
+      "chunk_p1_05",
+      "chunk_p1_01",
+      "chunk_p2_02"
+    ],
+    "answer": "There are 2 distinct entrance examinations named in the document: VITEEE, VITMEE.",
+    "verdict": "WRONG",
+    "why": "The four exams are introduced in four different places. Retrieval returned chunks about abbreviations and features instead of chunk_p3_06, where UCEED and V-DAT are defined, so the model saw only two exams and confidently reported two.",
+    "evidence_chunks": [
+      "chunk_p3_01",
+      "chunk_p3_02",
+      "chunk_p3_03",
+      "chunk_p3_06"
+    ]
+  },
+  {
+    "id": "C14",
+    "q": "List all 11 features of FFCS described in the document.",
+    "gold": "Features 0-10",
+    "chunks": [
+      "chunk_p2_01",
+      "chunk_p1_04",
+      "chunk_p2_03",
+      "chunk_p2_05"
+    ],
+    "answer": "Here are the 11 features of FFCS described in the document:\n\n1.  Important courses are offered in both semesters, allowing students to re-register and clear backlogs, aiding slow learners.\n2.  Provisions are made for academically sound students to carry out research activities in their UG Programme.\n3.  Offers a wide choice of courses for students to build their own curriculum.\n4.  Enhances students' skill in planning.\n5.  Students can register courses of their choice.\n6.  Students can alter the pace of learning.\n7.  Students can decide and alter their academic plan as they progress in time.\n8.  Follows a slot-based timetable.\n9.  Students can choose the time they want to attend a theory class/lab.\n10. Students can make their own timetable.\n11. Provides an opportunity to carry out challenging project(s) as part of the curriculum.",
+    "verdict": "WRONG",
+    "why": "The 11 features span four chunks. Only two were retrieved. Because the question asked for 11 items, the model manufactured 11 by splitting single features into several and inventing others - the instruction to produce a count overrode the evidence.",
+    "evidence_chunks": [
+      "chunk_p1_04",
+      "chunk_p1_05",
+      "chunk_p2_01",
+      "chunk_p2_02"
+    ]
+  },
+  {
+    "id": "C15",
+    "q": "Which schools are named in the document?",
+    "gold": "V-SIGN (VIT School of Design) and VIT Business School",
+    "chunks": [
+      "chunk_p1_01",
+      "chunk_p1_02",
+      "chunk_p1_05",
+      "chunk_p2_03"
+    ],
+    "answer": "The context does not contain the answer.",
+    "verdict": "WRONG",
+    "why": "A false negative. 'School' is topically close to the education vocabulary that saturates page 1, so retrieval returned page-1 chunks about abbreviations and features. Neither school is named there, so the model correctly said the context lacks the answer - while the document names two schools.",
+    "evidence_chunks": [
+      "chunk_p2_06",
+      "chunk_p3_04"
+    ]
+  },
+  {
+    "id": "C16",
+    "q": "How many course baskets are students allowed to choose from?",
+    "gold": "9",
+    "chunks": [
+      "chunk_p1_05",
+      "chunk_p1_04",
+      "chunk_p2_01",
+      "chunk_p2_02"
+    ],
+    "answer": "Students have the option of choosing courses from 8 course baskets.",
+    "verdict": "NUANCED",
+    "why": "Genuinely ambiguous, not an error. The source writes 'Discipline Elective or Specialization Elective', which can be read as one basket or two. The model said 8, the graph says 9. Building the graph forced a decision the prose left open - which is itself worth discussing.",
+    "evidence_chunks": [
+      "chunk_p1_05"
+    ]
+  },
+  {
+    "id": "C17",
+    "q": "Is a V-DAT score accepted for admission to M.Des?",
+    "gold": "Document does not say.",
+    "chunks": [
+      "chunk_p3_06",
+      "chunk_p3_03",
+      "chunk_p3_02",
+      "chunk_p3_01"
+    ],
+    "answer": "The context does not contain the answer.",
+    "verdict": "CORRECT",
+    "why": "",
+    "evidence_chunks": []
+  }
+]

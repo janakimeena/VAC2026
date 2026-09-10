@@ -1,0 +1,60 @@
+# Two services: the graph database, and the workshop environment.
+#
+#   docker compose up --build      -> Jupyter at http://localhost:8888
+#                                     Neo4j   at http://localhost:7474
+#
+# The workshop container waits for Neo4j to pass its healthcheck before starting,
+# so the build scripts never race the database.
+
+services:
+  neo4j:
+    image: neo4j:5-community
+    container_name: ffcs-neo4j
+    ports:
+      - "${NEO4J_HTTP_PORT:-7474}:7474"     # browser
+      - "${NEO4J_BOLT_PORT:-7687}:7687"     # bolt
+    environment:
+      NEO4J_AUTH: neo4j/ffcsdemo123
+      NEO4J_PLUGINS: '["apoc"]'
+      # apoc.convert.toJson and apoc.map.removeKeys are used by kg_coverage.py
+      # and hybrid_rag.py; without the plugin those two scripts fail.
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+    volumes:
+      - neo4j_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:7474 >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  workshop:
+    build: .
+    container_name: ffcs-workshop
+    # Run as the host user, so files the container writes into the bind mount
+    # (the vector store, notebooks you edit) belong to you and not to root.
+    # Defaults suit a typical single-user Linux box; on Mac and Windows Docker
+    # Desktop maps ownership for you and these are ignored.
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+    ports:
+      # Override if 8888 is taken:  JUPYTER_PORT=8899 docker compose up
+      - "${JUPYTER_PORT:-8888}:8888"
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USERNAME: neo4j
+      NEO4J_PASSWORD: ffcsdemo123
+      NEO4J_DATABASE: neo4j
+      # Optional. Only the notebooks' live-answer cells use it; everything else
+      # runs offline and the notebooks ship with recorded answers.
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3-flash-preview}
+      JUPYTER_PORT: ${JUPYTER_PORT:-8888}
+      NEO4J_HTTP_PORT: ${NEO4J_HTTP_PORT:-7474}
+    volumes:
+      # Edits inside Jupyter land in your working copy, so student work persists.
+      - .:/workshop
+    depends_on:
+      neo4j:
+        condition: service_healthy
+
+volumes:
+  neo4j_data:

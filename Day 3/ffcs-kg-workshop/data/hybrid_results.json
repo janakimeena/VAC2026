@@ -1,0 +1,404 @@
+{
+  "naive_on_gaps": [
+    {
+      "question": "What do employers expect from students?",
+      "retrieved": [
+        "chunk_p2_02",
+        "chunk_p1_03",
+        "chunk_p2_01",
+        "chunk_p3_05"
+      ],
+      "answer": "Employers expect students to have multi-disciplinary competency, leadership skills, and to be Information and Communication Technology (ICT) ready [chunk_p1_03].",
+      "citations": [
+        {
+          "chunk": "chunk_p1_03",
+          "citation": "page 1, passage 3 of 5",
+          "page": 1,
+          "quote": "Employers expect students to have multi-disciplinary competency, leadership skills, and be Information and Communication Technology (ICT) ready."
+        }
+      ],
+      "unverified": [],
+      "id": "K1",
+      "gold": "Multi-disciplinary competency, leadership skills, ICT ready."
+    },
+    {
+      "question": "What is the main objective of the design programmes at V-SIGN?",
+      "retrieved": [
+        "chunk_p3_04",
+        "chunk_p3_05",
+        "chunk_p1_03",
+        "chunk_p3_06"
+      ],
+      "answer": "The main objective of the programmes is to create a new breed of problem solvers in the domain of industrial design [chunk_p3_04].",
+      "citations": [
+        {
+          "chunk": "chunk_p3_04",
+          "citation": "page 3, passage 4 of 6 (paragraph 2)",
+          "page": 3,
+          "quote": "The main objective of the programmes is to create a new breed of problem solvers in the domain of industrial design."
+        }
+      ],
+      "unverified": [],
+      "id": "K2",
+      "gold": "Create a new breed of problem solvers in industrial design."
+    },
+    {
+      "question": "How are V-SIGN students trained to approach product design?",
+      "retrieved": [
+        "chunk_p3_04",
+        "chunk_p3_05",
+        "chunk_p1_03",
+        "chunk_p3_03"
+      ],
+      "answer": "Students are trained to approach product design from a holistic viewpoint by integrating aesthetics, ergonomics, and engineering in a balanced and harmonious manner [chunk_p3_05].",
+      "citations": [
+        {
+          "chunk": "chunk_p3_05",
+          "citation": "page 3, passage 5 of 6 (paragraph 2)",
+          "page": 3,
+          "quote": "The students are trained to approach product design from a holistic viewpoint - integrating the aesthetics, ergonomics, and engineering in a balanced and harmonious manner"
+        }
+      ],
+      "unverified": [],
+      "id": "K3",
+      "gold": "Holistic viewpoint: aesthetics, ergonomics and engineering."
+    },
+    {
+      "question": "What kind of building houses the design facilities at V-SIGN?",
+      "retrieved": [
+        "chunk_p3_04",
+        "chunk_p3_05",
+        "chunk_p1_03",
+        "chunk_p3_03"
+      ],
+      "answer": "The design studio and lab facilities at V-SIGN are housed in a sprawling new building [chunk_p3_04].",
+      "citations": [
+        {
+          "chunk": "chunk_p3_04",
+          "citation": "page 3, passage 4 of 6 (paragraph 2)",
+          "page": 3,
+          "quote": "Already state-of-the-art studio / lab facilities have been created in a sprawling new building for teaching, training, model-making, prototyping, and experimenting"
+        }
+      ],
+      "unverified": [],
+      "id": "K4",
+      "gold": "A sprawling new building."
+    },
+    {
+      "question": "Why does the document say present-day students need a flexible system?",
+      "retrieved": [
+        "chunk_p1_03",
+        "chunk_p1_04",
+        "chunk_p2_01",
+        "chunk_p2_03"
+      ],
+      "answer": "The document states that present-day students like to make decisions on their own and plan their future by themselves [chunk_p1_03].",
+      "citations": [
+        {
+          "chunk": "chunk_p1_03",
+          "citation": "page 1, passage 3 of 5",
+          "page": 1,
+          "quote": "Present day students like to make decisions on their own and like to plan their future by themselves."
+        }
+      ],
+      "unverified": [],
+      "id": "K5",
+      "gold": "They like to decide and plan their future themselves."
+    },
+    {
+      "question": "In a dispute over interpreting the rules, whose interpretation is final and binding?",
+      "retrieved": [
+        "chunk_p2_07",
+        "chunk_p2_06",
+        "chunk_p1_02",
+        "chunk_p2_03"
+      ],
+      "answer": "In a dispute over interpreting the rules, only the interpretation given by the Academic Council (or) the Academic Policy Committee will be considered final and binding [chunk_p2_07].",
+      "citations": [
+        {
+          "chunk": "chunk_p2_07",
+          "citation": "page 2, passage 7 of 7 (paragraph 9)",
+          "page": 2,
+          "quote": "In case of any dispute arising in interpreting the rules, only the interpretation given by the Academic Council (or) the Academic Policy Committee will be considered as final and binding."
+        }
+      ],
+      "unverified": [],
+      "id": "K7",
+      "gold": "Academic Council or Academic Policy Committee."
+    }
+  ],
+  "hybrid_on_gaps": [
+    {
+      "model": "gemini-3-flash-preview",
+      "question": "What do employers expect from students?",
+      "retrieved": [
+        "chunk_p2_02",
+        "chunk_p1_03",
+        "chunk_p2_01",
+        "chunk_p3_05"
+      ],
+      "answer": "Employers expect students to have multi-disciplinary competency, leadership skills, and be Information and Communication Technology (ICT) ready [chunk_p1_03].",
+      "citations": [
+        {
+          "chunk": "chunk_p1_03",
+          "citation": "page 1, passage 3 of 5",
+          "quote": "Employers expect students to have multi-disciplinary competency, leadership skills, and be Information and Communication Technology (ICT) ready."
+        }
+      ],
+      "unverified": [],
+      "n_facts": 24,
+      "n_census": 1,
+      "id": "K1",
+      "gold": "Multi-disciplinary competency, leadership skills, ICT ready."
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "question": "What is the main objective of the design programmes at V-SIGN?",
+      "retrieved": [
+        "chunk_p3_04",
+        "chunk_p3_05",
+        "chunk_p1_03",
+        "chunk_p3_06"
+      ],
+      "answer": "The main objective of the V-SIGN programmes is \"to create a new breed of problem solvers in the domain of industrial design\" [chunk_p3_04]. Additionally, the programmes aim to develop students' skills, knowledge, and aptitude to foster innovation in the product manufacturing industry [chunk_p3_05].",
+      "citations": [
+        {
+          "chunk": "chunk_p3_04",
+          "citation": "page 3, passage 4 of 6 (paragraph 2)",
+          "quote": "The main objective of the programmes is to create a new breed of problem solvers in the domain of industrial design."
+        },
+        {
+          "chunk": "chunk_p3_05",
+          "citation": "page 3, passage 5 of 6 (paragraph 2)",
+          "quote": "Our programmes aim at developing skills, knowledge and aptitude among students so that they can bring about innovation in the product manufacturing industry."
+        }
+      ],
+      "unverified": [],
+      "n_facts": 57,
+      "n_census": 5,
+      "id": "K2",
+      "gold": "Create a new breed of problem solvers in industrial design."
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "question": "How are V-SIGN students trained to approach product design?",
+      "retrieved": [
+        "chunk_p3_04",
+        "chunk_p3_05",
+        "chunk_p1_03",
+        "chunk_p3_03"
+      ],
+      "answer": "V-SIGN students are trained to approach product design from a \"holistic viewpoint - integrating the aesthetics, ergonomics, and engineering in a balanced and harmonious manner\" [chunk_p3_05]. This training is supported by state-of-the-art studio and lab facilities used for teaching, model-making, prototyping, and experimenting [chunk_p3_04].",
+      "citations": [
+        {
+          "chunk": "chunk_p3_05",
+          "citation": "page 3, passage 5 of 6 (paragraph 2)",
+          "quote": "The students are trained to approach product design from a holistic viewpoint - integrating the aesthetics, ergonomics, and engineering in a balanced and harmonious manner"
+        },
+        {
+          "chunk": "chunk_p3_04",
+          "citation": "page 3, passage 4 of 6 (paragraph 2)",
+          "quote": "Already state-of-the-art studio / lab facilities have been created in a sprawling new building for teaching, training, model-making, prototyping, and experimenting"
+        }
+      ],
+      "unverified": [],
+      "n_facts": 53,
+      "n_census": 5,
+      "id": "K3",
+      "gold": "Holistic viewpoint: aesthetics, ergonomics and engineering."
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "question": "What kind of building houses the design facilities at V-SIGN?",
+      "retrieved": [
+        "chunk_p3_04",
+        "chunk_p3_05",
+        "chunk_p1_03",
+        "chunk_p3_03"
+      ],
+      "answer": "The design facilities at V-SIGN are housed in a \"sprawling new building\" [chunk_p3_04]. This building provides space for activities such as teaching, training, model-making, prototyping, and experimenting [chunk_p3_04].",
+      "citations": [
+        {
+          "chunk": "chunk_p3_04",
+          "citation": "page 3, passage 4 of 6 (paragraph 2)",
+          "quote": "Already state-of-the-art studio / lab facilities have been created in a sprawling new building for teaching, training, model-making, prototyping, and experimenting"
+        }
+      ],
+      "unverified": [],
+      "n_facts": 53,
+      "n_census": 5,
+      "id": "K4",
+      "gold": "A sprawling new building."
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "question": "Why does the document say present-day students need a flexible system?",
+      "retrieved": [
+        "chunk_p1_03",
+        "chunk_p1_04",
+        "chunk_p2_01",
+        "chunk_p2_03"
+      ],
+      "answer": "Present day students prefer to make their own decisions and \"plan their future by themselves\" [chunk_p1_03]. Additionally, a flexible system is necessary because employers expect students to have \"multi-disciplinary competency\" and \"leadership skills,\" which the system enables by allowing students to \"build their own curriculum\" while enhancing their \"skill in planning\" [chunk_p1_03], [chunk_p2_01].",
+      "citations": [
+        {
+          "chunk": "chunk_p1_03",
+          "citation": "page 1, passage 3 of 5",
+          "quote": "Present day students like to make decisions on their own and like to plan their future by themselves."
+        },
+        {
+          "chunk": "chunk_p1_03",
+          "citation": "page 1, passage 3 of 5",
+          "quote": "Employers expect students to have multi-disciplinary competency, leadership skills, and be Information and Communication Technology (ICT) ready."
+        },
+        {
+          "chunk": "chunk_p2_01",
+          "citation": "page 2, passage 1 of 7 (paragraphs 1-4)",
+          "quote": "9. FFCS offers not only wide choice of courses for students to build their own curriculum, but also enhances their skill in planning."
+        }
+      ],
+      "unverified": [],
+      "n_facts": 39,
+      "n_census": 3,
+      "id": "K5",
+      "gold": "They like to decide and plan their future themselves."
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "question": "In a dispute over interpreting the rules, whose interpretation is final and binding?",
+      "retrieved": [
+        "chunk_p2_07",
+        "chunk_p2_06",
+        "chunk_p1_02",
+        "chunk_p2_03"
+      ],
+      "answer": "In any dispute regarding the interpretation of the rules, only the interpretation provided by the Academic Council or the Academic Policy Committee is considered final and binding [chunk_p2_07]. The Academic Policy Committee is headed by the Vice-Chancellor of the University [chunk_p2_07].",
+      "citations": [
+        {
+          "chunk": "chunk_p2_07",
+          "citation": "page 2, passage 7 of 7 (paragraph 9)",
+          "quote": "In case of any dispute arising in interpreting the rules, only the interpretation given by the Academic Council (or) the Academic Policy Committee will be considered as final and binding."
+        },
+        {
+          "chunk": "chunk_p2_07",
+          "citation": "page 2, passage 7 of 7 (paragraph 9)",
+          "quote": "Not withstanding anything mentioned herein, the Academic Council (or) the Academic Policy Committee headed by the Vice-Chancellor of the University has the right to add, delete or modify these regulations time to time."
+        }
+      ],
+      "unverified": [],
+      "n_facts": 42,
+      "n_census": 4,
+      "id": "K7",
+      "gold": "Academic Council or Academic Policy Committee."
+    }
+  ],
+  "hybrid_on_aggregates": [
+    {
+      "model": "gemini-3-flash-preview",
+      "question": "How many distinct entrance examinations are named in the document? List them.",
+      "retrieved": [
+        "chunk_p3_02",
+        "chunk_p1_05",
+        "chunk_p1_01",
+        "chunk_p2_02"
+      ],
+      "answer": "There are 4 distinct entrance examinations named in the document: UCEED, V-DAT, VITEEE, and VITMEE. Dates for exams like VITEEE and VITMEE are announced through the university website or media [chunk_p3_02].",
+      "citations": [
+        {
+          "chunk": "chunk_p3_02",
+          "citation": "page 3, passage 2 of 6 (paragraph 1)",
+          "quote": "Dates of the entrance examinations such as VITEEE, VITMEE will be announced separately through media/university website."
+        },
+        {
+          "chunk": "GRAPH",
+          "citation": "knowledge graph",
+          "quote": "ALL EntranceExam in the document (4 total): UCEED, V-DAT, VITEEE, VITMEE"
+        }
+      ],
+      "unverified": [],
+      "n_facts": 63,
+      "n_census": 5,
+      "id": "C13",
+      "gold": "4: VITEEE, VITMEE, UCEED, V-DAT"
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "question": "Which schools are named in the document?",
+      "retrieved": [
+        "chunk_p1_01",
+        "chunk_p1_02",
+        "chunk_p1_05",
+        "chunk_p2_03"
+      ],
+      "answer": "The document names two schools: VIT Business School and VIT School of Design.",
+      "citations": [
+        {
+          "chunk": "GRAPH",
+          "citation": "knowledge graph",
+          "quote": "ALL School in the document (2 total): VIT Business School, VIT School of Design"
+        }
+      ],
+      "unverified": [],
+      "n_facts": 71,
+      "n_census": 5,
+      "id": "C15",
+      "gold": "VIT School of Design (V-SIGN) and VIT Business School"
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "question": "List all the facilities at the school that offers B.Des.",
+      "retrieved": [
+        "chunk_p3_06",
+        "chunk_p3_04",
+        "chunk_p3_02",
+        "chunk_p1_05"
+      ],
+      "answer": "The VIT School of Design, which offers the B.Des programme, includes five facilities: 3D-iD Studio, Ergonomics Lab, PROTICS Studio, Painting Booth, and Smart PD Lab [chunk_p3_04].",
+      "citations": [
+        {
+          "chunk": "chunk_p3_04",
+          "citation": "page 3, passage 4 of 6 (paragraph 2)",
+          "quote": "V-SIGN, VIT School of Design is one of the newest schools in VIT, Vellore. It has been functional from July 2018 and currently B.Des and M.Des programmes in the branch of Industrial Design are being offered by this new school."
+        },
+        {
+          "chunk": "GRAPH",
+          "citation": "knowledge graph",
+          "quote": "VIT School of Design -OFFERS-> B.Des"
+        },
+        {
+          "chunk": "GRAPH",
+          "citation": "knowledge graph",
+          "quote": "ALL Facility in the document (5 total): 3D-iD Studio, Ergonomics Lab, PROTICS Studio, Painting Booth, Smart PD Lab"
+        }
+      ],
+      "unverified": [],
+      "n_facts": 54,
+      "n_census": 7,
+      "id": "C7",
+      "gold": "PROTICS Studio, 3D-iD Studio, Smart PD Lab, Ergonomics Lab, Painting Booth"
+    },
+    {
+      "model": "gemini-3.5-flash",
+      "question": "How many Academic Council meetings are referenced in the document?",
+      "retrieved": [
+        "chunk_p2_04",
+        "chunk_p2_07",
+        "chunk_p2_05",
+        "chunk_p2_03"
+      ],
+      "answer": "There are 10 council meetings referenced in the document. This includes 9 specific Academic Council meetings (the 18th, 20th, 27th, 28th, 37th, 46th, 59th, 71st, and 72nd meetings) and 1 Standing Committee meeting of the Academic Council.",
+      "citations": [
+        {
+          "chunk": "GRAPH",
+          "citation": "knowledge graph",
+          "quote": "ALL CouncilMeeting in the document (10 total): 18th Academic Council meeting, 20th Academic Council meeting, 27th Academic Council meeting, 28th Academic Council meeting, 37th Academic Council meeting, 46th Academic Council meeting, 59th Academic Council meeting, 71st Academic Council meeting, 72nd Academic Council meeting, Standing Committee meeting of the Academic Council"
+        }
+      ],
+      "unverified": [],
+      "n_facts": 46,
+      "n_census": 3,
+      "id": "C9",
+      "gold": "10"
+    }
+  ]
+}
