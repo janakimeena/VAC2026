@@ -8,29 +8,87 @@ usual textbook story about RAG, the notebooks say so.
 
 ---
 
-## Quick start
+## Setup
+
+You need **Docker Desktop** (Windows/Mac) or **Docker Engine + compose** (Linux). Nothing else —
+no Python install, no API key. Allow about 10 minutes for the first run, most of it the image build.
+
+### 1. Get the code
 
 ```bash
 git clone <this-repo>
 cd ffcs-kg-workshop
-cp .env.example .env          # optional: only needed for live LLM answers
-docker compose up --build     # first build ~5 min, downloads the embedding model
 ```
 
-Then, in a second terminal:
+### 2. Start the two containers
+
+```bash
+docker compose up --build
+```
+
+This builds the workshop image (~5 min the first time; it bakes in the 130 MB embedding model so
+the classroom never waits on wifi) and starts Neo4j alongside it. **Leave this terminal running** —
+it is the server. You will see Jupyter's startup banner when it is ready.
+
+Linux only: run the container as yourself first, so files it writes belong to you —
+`echo "DOCKER_UID=$(id -u)"$'\n'"DOCKER_GID=$(id -g)" >> .env`
+
+### 3. Build the graph and the vector store
+
+In a **second** terminal, in the same folder:
 
 ```bash
 docker compose exec workshop ./setup.sh
 ```
 
-That chunks the PDF, builds the graph, builds the vector store, and verifies all of it.
+This chunks the PDF, adds citations, loads the graph, builds the vector store, and then checks
+its own work. It takes about a minute. **Wait for it to print `Ready.`** — the run ends with:
 
-Open:
+```
+==> verifying everything the notebooks need
+  PASS  chunks + citations     18/18 chunks carry a citation
+  PASS  vector store           18 vectors in collection 'ffcs_chunks'
+  PASS  knowledge graph        126 nodes, 266 relationships
 
-- **Jupyter** → http://localhost:8888 → `notebooks/`
-- **Neo4j Browser** → http://localhost:7474 (user `neo4j`, password `ffcsdemo123`)
+Ready.
+```
 
-To stop: `docker compose down`. To also delete the graph: `docker compose down -v`.
+If you see a `FAIL` line instead, it names the one command that fixes it. The script is safe to
+re-run as often as you like.
+
+### 4. Open the notebooks
+
+- **Jupyter** → http://localhost:8888 → `notebooks/` → start with `1_naive_rag_vs_knowledge_graph.ipynb`
+- **Neo4j Browser** → http://localhost:7474 — user `neo4j`, password `ffcsdemo123`
+
+Run the notebook cells **in order from the top**. The first cell loads the data every later cell
+uses, so a kernel restart means starting from cell 1 again.
+
+### Checking, stopping, restarting
+
+```bash
+docker compose exec workshop ./setup.sh --check   # is my build still complete?
+docker compose down                               # stop; the graph survives
+docker compose down -v                            # stop and delete the graph too
+docker compose up                                 # start again (no --build needed)
+```
+
+`--check` verifies the three things the notebooks open — the chunk file, the vector store and the
+graph — without rebuilding anything. Run it first whenever a notebook cell misbehaves.
+
+### Windows notes
+
+Use **PowerShell** and run the commands exactly as written above; `docker compose exec` runs them
+inside Linux, so forward slashes are correct even on Windows.
+
+Two things go wrong on Windows specifically, and both are worth knowing before they happen:
+
+- **Line endings.** Git for Windows rewrites files to CRLF on checkout, which breaks `setup.sh`
+  with `bad interpreter` or `$'\r': command not found`. The committed `.gitattributes` prevents
+  this, so a fresh clone is fine. If you cloned before that file existed, re-clone or run
+  `git config core.autocrlf false` and clone again.
+- **`./setup.sh` must be run through `docker compose exec`**, not in PowerShell directly.
+  PowerShell has no `bash`, and the scripts expect the container's Python and its Neo4j hostname.
 
 ### No API key needed
 
@@ -38,8 +96,9 @@ The graph, the vector store, the coverage test and the ablation all run **comple
 Both notebooks open with answers recorded from real runs, so a whole class can work through
 them with no API calls at all.
 
-A key is only needed to *regenerate* answers live. The Gemini free tier is **5 requests/minute**
-plus a small daily cap, so it is not suitable for a class sharing one key.
+A key is only needed to *regenerate* answers live. Copy `.env.example` to `.env` and add one from
+https://aistudio.google.com/apikey. The Gemini free tier is **5 requests/minute** plus a small
+daily cap, so it is not suitable for a class sharing one key.
 
 ### Running without Docker
 
@@ -54,6 +113,25 @@ docker run -d --name ffcs-neo4j -p 7474:7474 -p 7687:7687 \
 
 APOC is required — `kg_coverage.py` and `hybrid_rag.py` use `apoc.convert.toJson` and
 `apoc.map.removeKeys`.
+
+### What setup.sh actually does
+
+Worth reading once, because the four steps are **not independent**:
+
+```
+  1  chunk_pdf.py         small.pdf   ->  data/chunks.json        (18 chunks)
+  2  add_citations.py     chunks.json ->  + page/passage citations, pushed to both stores
+  3  build_graph.py       graph_data.py -> Neo4j                  (126 nodes, 266 rels)
+  4  build_vectorstore.py chunks.json ->  data/chroma_ffcs/       (18 vectors, 384 dims)
+```
+
+Step 1 rewrites `chunks.json` **without** citations and step 2 puts them back, so a run that
+stops between the two leaves the notebooks half-working — the graph loads, but the citation
+cells raise `KeyError: 'citation'`. This is why `setup.sh` verifies itself at the end rather
+than assuming every step ran, and why the fix for almost anything odd is simply to run it again.
+
+`data/chroma_ffcs/` is deliberately **not** committed (see `.gitignore`) — it is build output,
+rebuilt by step 4. A fresh clone therefore has no vector store until you run `setup.sh`.
 
 ---
 
@@ -104,11 +182,14 @@ Hybrid reaches 100% — at **2.5× the prompt size**. That is the trade, and it 
 ## Repository layout
 
 ```
+├── setup.sh              builds everything, then verifies it (--check to verify only)
+├── docker-compose.yml    the two containers: Neo4j, and the workshop environment
 ├── data/                 the corpus, chunks, and recorded LLM answers
 │   ├── small.pdf                 3-page source document
 │   ├── chunks.json               18 chunks with page/passage citations
 │   ├── naive_rag_results.json    verbatim answers from live runs
-│   └── hybrid_results.json
+│   ├── hybrid_results.json
+│   └── chroma_ffcs/              build output - created by setup.sh, not committed
 ├── notebooks/
 │   ├── 1_naive_rag_vs_knowledge_graph.ipynb
 │   └── 2_hybrid_rag.ipynb
@@ -175,16 +256,39 @@ and it is not free.
 
 ## Troubleshooting
 
-| Symptom | Cause |
+**Try this first.** Most notebook errors are a missing build step, not a bug:
+
+```bash
+docker compose exec workshop ./setup.sh --check
+```
+
+Any `FAIL` line names the single command that fixes it. If everything passes, the problem is
+elsewhere — look for your symptom below.
+
+| Symptom | Cause and fix |
 |---|---|
-| `ServiceUnavailable` connecting to Neo4j | container still starting — compose waits for the healthcheck, but a manual `docker run` needs ~20 s |
+| `NotFoundError: Collection [ffcs_chunks] does not exist` | the vector store was never built — it is build output and is not in the repo. `docker compose exec workshop python src/build_vectorstore.py`, then restart the notebook kernel |
+| `KeyError: 'citation'` in a notebook cell | `setup.sh` stopped between step 1 and step 2, so `chunks.json` was regenerated without citations. `docker compose exec workshop python src/add_citations.py`, then restart the kernel |
+| `NameError` on `chunks`, `by_id`, `naive_gaps`, `collection`, `driver` | cells were run out of order, or the kernel was restarted. Re-run from the first cell |
+| `bad interpreter: /usr/bin/env` or `$'\r': command not found` (Windows) | `setup.sh` was checked out with CRLF line endings. `.gitattributes` prevents this — re-clone, or `git config core.autocrlf false` then clone again |
+| `ServiceUnavailable` connecting to Neo4j | container still starting — compose waits for the healthcheck, but a manual `docker run` needs ~20 s. `setup.sh` now waits up to 60 s on its own |
 | `Unknown function 'apoc.convert.toJson'` | APOC plugin missing; recreate the Neo4j container with `NEO4J_PLUGINS='["apoc"]'` |
-| `RuntimeError: GOOGLE_API_KEY is not set` | only live cells need it; the recorded answers work without |
-| `429 RESOURCE_EXHAUSTED` | free-tier limit — 5 requests/minute, small daily cap. Try another `GEMINI_MODEL` |
+| `RuntimeError: GOOGLE_API_KEY is not set` | only live-answer cells need it; the recorded answers work without. Copy `.env.example` to `.env` to add one |
+| `429 RESOURCE_EXHAUSTED` | free-tier limit — 5 requests/minute, small daily cap. Try another `GEMINI_MODEL` in `.env` |
 | Notebook can't import `kag` | run it from `notebooks/`; the first cell puts `src/` on the path |
 | `Bind for 0.0.0.0:8888 failed: port is already allocated` | something else uses that port. `JUPYTER_PORT=8899 docker compose up` (also `NEO4J_HTTP_PORT`, `NEO4J_BOLT_PORT`) |
-| Graph looks empty | run `./setup.sh` |
-| Files in `data/` owned by `root`, cannot delete (Linux) | the container ran as root. Set `DOCKER_UID=$(id -u) DOCKER_GID=$(id -g)` in `.env`, then `docker compose up --build`. To clear existing root-owned files: `docker run --rm -v "$PWD:/w" alpine rm -rf /w/data/chroma_ffcs` |
+| Graph looks empty in Neo4j Browser | run `docker compose exec workshop ./setup.sh` |
+| Edits to a notebook vanish, or an old version keeps loading | a stale `.ipynb_checkpoints/` copy. `docker compose exec workshop rm -rf notebooks/.ipynb_checkpoints` |
+| Files in `data/` owned by `root`, cannot delete (Linux) | the container ran as root. Set `DOCKER_UID=$(id -u)` and `DOCKER_GID=$(id -g)` in `.env`, then `docker compose up --build`. To clear existing root-owned files: `docker run --rm -v "$PWD:/w" alpine rm -rf /w/data/chroma_ffcs` |
+| `Permission denied` writing `data/chroma_ffcs` (Windows) | the `user:` line in `docker-compose.yml` is a Linux-only accommodation. Comment it out, then `docker compose up -d --force-recreate workshop` |
+
+### Starting completely over
+
+```bash
+docker compose down -v                 # also deletes the graph volume
+docker compose up --build -d
+docker compose exec workshop ./setup.sh
+```
 
 ---
 
@@ -206,8 +310,12 @@ git remote add origin git@github.com:<you>/<repo>.git
 git push -u origin main
 ```
 
-That commits **29 files, about 900 KB**. The vector store is rebuilt by `setup.sh`, so it is
-deliberately not committed.
+That commits about **30 files, 900 KB**. The vector store is rebuilt by `setup.sh`, so it is
+deliberately not committed — which is exactly why a fresh clone must run `setup.sh` before the
+notebooks will open.
+
+Keep `.gitattributes` in the commit. It forces LF line endings on the shell and Python files, and
+without it every student on Windows gets a `setup.sh` that will not run.
 
 **Check before you push:** `.env` must not appear in `git status`. It is gitignored, but a key
 pushed once is a key that must be rotated.

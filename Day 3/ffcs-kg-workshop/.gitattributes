@@ -1,0 +1,14 @@
+# Shell scripts run inside a Linux container. Git for Windows converts checked-out
+# files to CRLF by default, which breaks the `#!/usr/bin/env bash` shebang and
+# produces errors like "bad interpreter" or "$'\r': command not found".
+# Force LF for everything the container executes or parses.
+*.sh    text eol=lf
+*.py    text eol=lf
+Dockerfile      text eol=lf
+docker-compose.yml text eol=lf
+
+# Notebooks are JSON; keep them byte-identical across platforms.
+*.ipynb -text
+
+# Binary
+*.pdf   binary
