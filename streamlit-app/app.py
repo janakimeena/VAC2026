@@ -45,13 +45,22 @@ import streamlit as st
 # here rather than editing it keeps the two files identical, so a student can diff
 # the deployed app against the workshop and find no divergence in the code that
 # matters. Streamlit raises if no secrets file exists at all, hence the guard.
+SECRET_KEYS = ("NEO4J_URI", "NEO4J_USERNAME", "NEO4J_PASSWORD", "NEO4J_DATABASE",
+               "GOOGLE_API_KEY", "GEMINI_MODEL")
+
+# What the bridge actually found, recorded so a failure can say WHICH keys arrived
+# rather than leaving the reader to guess. Swallowing the error and reporting only
+# the downstream symptom — a connection refused against the default localhost URI —
+# is what made this hard to diagnose the first time: the message named a URI nobody
+# had configured, which reads like a wrong value rather than a missing one.
+SECRETS_FOUND, SECRETS_ERROR = [], None
 try:
-    for _key in ("NEO4J_URI", "NEO4J_USERNAME", "NEO4J_PASSWORD", "NEO4J_DATABASE",
-                 "GOOGLE_API_KEY", "GEMINI_MODEL"):
-        if _key in st.secrets:
+    for _key in SECRET_KEYS:
+        if _key in st.secrets and str(st.secrets[_key]).strip():
             os.environ[_key] = str(st.secrets[_key])
-except Exception:
-    pass                                    # no secrets.toml: fall back to the environment
+            SECRETS_FOUND.append(_key)
+except Exception as _e:                     # no secrets configured at all
+    SECRETS_ERROR = f"{type(_e).__name__}: {_e}"
 
 # Chroma needs sqlite3 >= 3.35, and some managed images still ship an older one.
 # pysqlite3-binary is a drop-in; swapping it into sys.modules before chromadb is
@@ -176,11 +185,44 @@ def preflight():
             problems.append("Neo4j is reachable but holds no graph — load it once with "
                         "`python scripts/load_graph.py`.")
     except Exception as e:
-        problems.append(
-            f"Cannot reach Neo4j at `{os.environ.get('NEO4J_URI', 'bolt://localhost:7687')}` "
-            f"({type(e).__name__}). Check NEO4J_URI / NEO4J_USERNAME / NEO4J_PASSWORD in "
-            "`.streamlit/secrets.toml` (locally) or in the app's Secrets (on Community "
-            "Cloud). An Aura instance that has been idle for days may simply be paused.")
+        uri = os.environ.get("NEO4J_URI")
+        if not uri:
+            # No URI anywhere. The connection error is a red herring — the real
+            # fault is upstream, in configuration that never arrived.
+            detail = ["**`NEO4J_URI` is not set**, so the app fell back to "
+                      "`bolt://localhost:7687`, where nothing is listening.",
+                      "",
+                      f"Secrets keys found: "
+                      f"{', '.join(f'`{k}`' for k in SECRETS_FOUND) or '_none_'}."]
+            if SECRETS_ERROR:
+                detail.append(f"Reading secrets failed with `{SECRETS_ERROR}` — on "
+                              "Community Cloud that means no Secrets have been saved "
+                              "for this app; locally it means there is no "
+                              "`.streamlit/secrets.toml`.")
+            detail += [
+                "",
+                "In the app's **Settings → Secrets**, paste the keys at the **top "
+                "level** of the TOML — not underneath a `[section]` header, which "
+                "would nest them where this lookup cannot see them:",
+                "```toml",
+                'NEO4J_URI = "neo4j+s://xxxxxxxx.databases.neo4j.io"',
+                'NEO4J_USERNAME = "…"',
+                'NEO4J_PASSWORD = "…"',
+                'NEO4J_DATABASE = "…"',
+                "```",
+                "Saving Secrets restarts the app on its own; if nothing changes, "
+                "reboot it once.",
+            ]
+            problems.append("\n".join(detail))
+        else:
+            problems.append(
+                f"Cannot reach Neo4j at `{uri}` ({type(e).__name__}). "
+                f"Secrets keys found: "
+                f"{', '.join(f'`{k}`' for k in SECRETS_FOUND) or '_none_'}. "
+                "Check the username, password and database name — an `AuthError` means "
+                "the username or password, a `DatabaseNotFound` means the database "
+                "name, and neither is always `neo4j`. An Aura instance left idle for "
+                "days may simply be paused; resume it from the Aura console.")
     return problems
 
 
