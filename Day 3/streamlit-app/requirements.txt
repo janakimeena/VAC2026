@@ -1,0 +1,30 @@
+# Dependencies for Streamlit Community Cloud.
+#
+# Pinned to the versions this app was verified against; Community Cloud installs
+# from this file on every deploy, so an unpinned upgrade is a deploy that breaks
+# without a commit to explain it.
+
+# --- app -------------------------------------------------------------------
+streamlit==1.52.2
+altair==5.5.0
+pandas==2.3.3
+
+# --- retrieval -------------------------------------------------------------
+chromadb==1.5.9
+sentence-transformers==6.0.0
+
+# CPU-only torch. sentence-transformers pulls torch in regardless; naming the CPU
+# build keeps the image inside Community Cloud's resource limits, since the CUDA
+# wheel is several GB and buys nothing on a machine with no GPU.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.13.0
+
+# Chroma needs sqlite3 >= 3.35 and some managed images ship an older one.
+# app.py swaps this in before importing chromadb.
+pysqlite3-binary==0.5.4
+
+# --- graph -----------------------------------------------------------------
+neo4j==6.3.0
+
+# --- generation ------------------------------------------------------------
+google-genai==2.20.0

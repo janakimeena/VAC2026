@@ -1,0 +1,5 @@
+.streamlit/secrets.toml
+data/chroma_ffcs/
+__pycache__/
+*.pyc
+.DS_Store
