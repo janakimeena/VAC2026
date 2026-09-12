@@ -4,8 +4,13 @@ One question, three retrieval strategies, three panels. The point of the app is 
 the strategies fail on **different questions**, and that is only convincing when you
 can see all three answer the same question at the same moment.
 
-This is a **standalone copy** of the pipeline in `../ffcs-kg-workshop`. It does not
+This is a **standalone copy** of the pipeline in `Day 3/ffcs-kg-workshop`. It does not
 import from the workshop and does not modify it; the two can be changed independently.
+
+It lives at the repository root rather than beside the workshop for one blunt reason:
+Streamlit Community Cloud's dependency installer splits the main-module path on
+whitespace, so a project under `Day 3/` fails the build looking for
+`3/streamlit-app/requirements.txt`. No repository path here may contain a space.
 
 ```
 streamlit run app.py          →  http://localhost:8501
@@ -74,7 +79,7 @@ still reaches 100% context recall, `condition_group` and `evidence` properties a
 You need a Neo4j with the graph loaded. The quickest is the workshop's:
 
 ```bash
-cd ../ffcs-kg-workshop && docker compose up -d neo4j
+cd "Day 3/ffcs-kg-workshop" && docker compose up -d neo4j
 ```
 
 Then, from this directory:
@@ -146,8 +151,8 @@ At <https://share.streamlit.io> → **Create app** → **Deploy a public app fro
 |---|---|
 | Repository | `janakimeena/VAC2026` |
 | Branch | `main` |
-| Main file path | `Day 3/streamlit-app/app.py` |
-| Python version | 3.12 (under **Advanced settings**) |
+| Main file path | `streamlit-app/app.py` |
+| Python version | **3.12** — set this under **Advanced settings** |
 
 Then open **Advanced settings → Secrets** and paste the contents of your
 `secrets.toml` — the same keys, TOML format:
@@ -164,9 +169,15 @@ GEMINI_MODEL = "gemini-3-flash-preview"
 Click **Deploy**. The first build takes several minutes — it installs torch and
 downloads the embedding model.
 
-> **If the main file path is rejected**, the space in `Day 3` is the likely cause.
-> Either move this folder to a path without a space, or push it as its own repository
-> with `app.py` at the root. Nothing in the app depends on where it sits.
+> **Set the Python version before you click Deploy.** The default is whatever is
+> current — a build log that says `Using Python 3.14 environment` means it was not
+> set. The pinned `torch` and `chromadb` wheels do not exist for every Python, so the
+> install fails partway. Community Cloud **cannot change an app's Python version
+> after creation**: delete the app and create it again with 3.12 selected.
+
+> **Never put this project under a path containing a space.** The installer splits
+> the main-module path on whitespace and then cannot find `requirements.txt`, with an
+> error naming a path that does not exist (`3/streamlit-app/requirements.txt`).
 
 ### 6. Before you share the URL
 

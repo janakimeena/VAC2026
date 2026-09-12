@@ -17,7 +17,7 @@ workshop notebooks call, so what is on screen is the code the students read:
 
 DEPLOYMENT
 ----------
-This is a standalone copy of the ffcs-kg-workshop pipeline, packaged to run on
+This is a standalone copy of the Day 3/ffcs-kg-workshop pipeline, packaged to run on
 Streamlit Community Cloud, where there is no Docker and no local database. Two
 things therefore differ from the workshop:
 
