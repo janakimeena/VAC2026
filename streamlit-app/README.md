@@ -169,12 +169,20 @@ GEMINI_MODEL = "gemini-3-flash-preview"
 Click **Deploy**. The first build takes several minutes — it installs torch and
 downloads the embedding model.
 
-> **The Python version is worth setting, but no longer has to be.** `requirements.txt`
-> now resolves on 3.12 and 3.14 alike. It did not at first: `pysqlite3-binary` ships
-> a different set of wheels per interpreter, and an exact pin on a version with no
-> 3.14 wheel failed the whole build before any other dependency was considered. If
-> you do want to change an app's Python version, Community Cloud cannot do it after
-> creation — delete the app and create it again.
+> **The Python version no longer has to be set.** The app is verified end to end on
+> both 3.12 and 3.14. Getting there took two fixes, both worth knowing about because
+> neither error named the real problem:
+>
+> * `pysqlite3-binary` pinned exactly. It ships a different set of wheels per
+>   interpreter, and the pinned version had none for 3.14, so the build failed before
+>   any other dependency was considered.
+> * `altair` 5.5 pinned. It *installs* on 3.14 and then throws `TypeError` at
+>   `import altair`, because its generated schema uses `TypedDict(closed=True)`, a
+>   draft typing feature 3.14's stdlib rejects. A dependency that resolves is not a
+>   dependency that imports.
+>
+> If you do want to change an app's Python version, Community Cloud cannot do it
+> after creation — delete the app and create it again.
 
 > **Never put this project under a path containing a space.** The installer splits
 > the main-module path on whitespace and then cannot find `requirements.txt`, with an

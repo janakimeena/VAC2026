@@ -6,8 +6,13 @@
 
 # --- app -------------------------------------------------------------------
 streamlit==1.52.2
-altair==5.5.0
 pandas==2.3.3
+
+# altair 5.5 cannot be imported on Python 3.14: its generated schema declares
+# TypedDict(closed=True), a draft typing feature that 3.14's stdlib rejects, and the
+# app dies at `import altair` long after the install reports success. 6.x fixes it.
+# The chart code here is compatible with both, and is exercised on both.
+altair==6.2.2
 
 # --- retrieval -------------------------------------------------------------
 chromadb==1.5.9
