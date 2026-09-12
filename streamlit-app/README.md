@@ -169,11 +169,12 @@ GEMINI_MODEL = "gemini-3-flash-preview"
 Click **Deploy**. The first build takes several minutes — it installs torch and
 downloads the embedding model.
 
-> **Set the Python version before you click Deploy.** The default is whatever is
-> current — a build log that says `Using Python 3.14 environment` means it was not
-> set. The pinned `torch` and `chromadb` wheels do not exist for every Python, so the
-> install fails partway. Community Cloud **cannot change an app's Python version
-> after creation**: delete the app and create it again with 3.12 selected.
+> **The Python version is worth setting, but no longer has to be.** `requirements.txt`
+> now resolves on 3.12 and 3.14 alike. It did not at first: `pysqlite3-binary` ships
+> a different set of wheels per interpreter, and an exact pin on a version with no
+> 3.14 wheel failed the whole build before any other dependency was considered. If
+> you do want to change an app's Python version, Community Cloud cannot do it after
+> creation — delete the app and create it again.
 
 > **Never put this project under a path containing a space.** The installer splits
 > the main-module path on whitespace and then cannot find `requirements.txt`, with an

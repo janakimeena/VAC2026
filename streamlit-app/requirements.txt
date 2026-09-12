@@ -20,8 +20,16 @@ sentence-transformers==6.0.0
 torch==2.13.0
 
 # Chroma needs sqlite3 >= 3.35 and some managed images ship an older one.
-# app.py swaps this in before importing chromadb.
-pysqlite3-binary==0.5.4
+# app.py swaps this in before importing chromadb, and skips it silently when the
+# stdlib sqlite3 is already new enough.
+#
+# Deliberately NOT pinned exactly, unlike everything else here. This package
+# publishes a different set of wheels per Python version - 0.5.4 has none for
+# Python 3.14, only 0.5.4.post2 - and an exact pin turns a host's choice of
+# interpreter into a hard build failure before any other dependency is even
+# considered. It is a compatibility shim, so the newest build is always the one
+# we want.
+pysqlite3-binary>=0.5.4
 
 # --- graph -----------------------------------------------------------------
 neo4j==6.3.0
